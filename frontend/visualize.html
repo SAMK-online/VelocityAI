@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VelocityAI - Learn & Visualize</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #0f172a;
+      --bg-elevated: #1e293b;
+      --panel: rgba(30, 41, 59, 0.6);
+      --panel-hover: rgba(51, 65, 85, 0.7);
+      --border: rgba(255, 255, 255, 0.08);
+      --text: #ffffff;
+      --text-muted: rgba(255, 255, 255, 0.7);
+      --accent: rgba(255, 255, 255, 0.9);
+      --accent-hover: rgba(255, 255, 255, 1);
+      --success: #34d399;
+      --error: #ef4444;
+      --warning: #fbbf24;
+      --radius: 12px;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+      background-size: 64px 64px;
+      color: var(--text);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    /* === PREMIUM DESIGN LAYERS === */
+
+    /* Noise texture overlay */
+    .noise-overlay {
+      position: fixed;
+      inset: 0;
+      opacity: 0.12;
+      mix-blend-mode: soft-light;
+      pointer-events: none;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/></filter><rect width="180" height="180" filter="url(%23n)" opacity="0.9"/></svg>');
+      z-index: 999;
+    }
+
+    /* Grid backdrop */
+    .grid-backdrop {
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: linear-gradient(to bottom, black 50%, transparent);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Cursor highlight */
+    .cursor-highlight {
+      position: fixed;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.06), transparent 70%);
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 50;
+      transition: opacity 0.3s;
+    }
+
+    /* Typography enhancements */
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+    }
+
+    /* Top Navigation */
+    .top-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      background: rgba(23, 23, 23, 0.4);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 16px;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .logo-icon {
+      width: 24px;
+      height: 24px;
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 4px;
+      background: rgba(255, 255, 255, 0.02);
+      padding: 4px;
+      border-radius: 8px;
+    }
+
+    .tab {
+      padding: 8px 16px;
+      border-radius: 6px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .tab:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text);
+    }
+
+    .tab.active {
+      background: var(--accent);
+      color: #000;
+    }
+
+    /* Main Layout */
+    .main-container {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 280px;
+      background: var(--panel);
+      backdrop-filter: blur(20px);
+      border-right: 1px solid var(--border);
+      padding: 20px;
+      overflow-y: auto;
+      flex-shrink: 0;
+    }
+
+    .sidebar h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+    }
+
+    .topic-group {
+      margin-bottom: 24px;
+    }
+
+    .topic-item {
+      padding: 10px 12px;
+      margin-bottom: 4px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 14px;
+      border: 1px solid transparent;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .topic-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--border);
+    }
+
+    .topic-item.active {
+      background: rgba(34, 211, 238, 0.1);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .topic-item-title {
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+
+    .topic-item-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Content Area */
+    .content-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Visualization Canvas */
+    .visualization-container {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      background: linear-gradient(180deg, rgba(10, 10, 10, 0.5) 0%, rgba(0, 0, 0, 0.8) 100%);
+    }
+
+    .canvas-header {
+      padding: 16px 20px;
+      background: rgba(23, 23, 23, 0.6);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .canvas-title {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .canvas-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Playback Controls */
+    .playback-controls {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .control-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      font-size: 16px;
+    }
+
+    .control-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--accent);
+    }
+
+    .control-btn.primary {
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+    }
+
+    .control-btn.primary:hover {
+      background: var(--accent-hover);
+    }
+
+    .speed-control {
+      padding: 0 12px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Canvas */
+    .canvas {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #viz-canvas {
+      width: 100%;
+      height: 100%;
+      background: transparent;
+    }
+
+    /* Conversation Panel */
+    .conversation-panel {
+      height: 280px;
+      background: var(--panel);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+
+    .conversation-header {
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .conversation-title {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .message {
+      display: flex;
+      gap: 12px;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .message-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .message.user .message-avatar {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+    }
+
+    .message.ai .message-avatar {
+      background: linear-gradient(135deg, var(--accent), #0ea5e9);
+    }
+
+    .message-content {
+      flex: 1;
+      font-size: 14px;
+      line-height: 1.5;
+      padding-top: 4px;
+    }
+
+    .message.user .message-content {
+      color: var(--text-muted);
+    }
+
+    /* Input Area */
+    .input-area {
+      padding: 16px 20px;
+      border-top: 3px solid var(--accent);
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      background: rgba(34, 211, 238, 0.1);
+    }
+
+    .input-wrapper {
+      flex: 1;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 14px;
+    }
+
+    .input-wrapper input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    .input-wrapper input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .mic-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: none;
+      background: var(--accent);
+      color: #000;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      transition: all 0.2s;
+    }
+
+    .mic-btn:hover {
+      background: var(--accent-hover);
+      transform: scale(1.05);
+    }
+
+    .mic-btn.recording {
+      background: var(--error);
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.8;
+        transform: scale(1.1);
+      }
+    }
+
+    /* Empty State */
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: var(--text-muted);
+      text-align: center;
+      padding: 40px;
+    }
+
+    .empty-state-icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+
+    .empty-state h3 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .empty-state p {
+      font-size: 14px;
+      max-width: 400px;
+      line-height: 1.6;
+    }
+
+    /* Status Indicator */
+    .status-indicator {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 8px 16px;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 100;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--success);
+      animation: blink 1.5s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* Scrollbar Styling */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <!-- Premium Design Layers -->
+  <div class="noise-overlay"></div>
+  <div class="grid-backdrop"></div>
+  <div class="cursor-highlight"></div>
+
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <div class="nav-left">
+      <a href="/" class="logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 100 100" style="width: 20px; height: 20px;">
+            <defs>
+              <linearGradient id="vGradientNavViz" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#6ee7b7;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#7dd3fc;stop-opacity:1" />
+              </linearGradient>
+            </defs>
+            <path d="M 30 20 L 50 70 L 70 20 L 85 20 L 50 90 L 15 20 Z" fill="url(#vGradientNavViz)"/>
+            <path d="M 60 15 L 75 30 L 70 30 L 70 45 L 60 45 L 60 30 L 55 30 Z" fill="url(#vGradientNavViz)"/>
+          </svg>
+        </div>
+        <span>VelocityAI</span>
+      </a>
+      <div class="tabs">
+        <button class="tab" onclick="window.location.href='/app'">Practice</button>
+        <button class="tab active">Learn & Visualize</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <div class="main-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="topic-group">
+        <h3>Data Structures</h3>
+        <div class="topic-item" data-topic="array-basics">
+          <div class="topic-item-title">Arrays</div>
+          <div class="topic-item-desc">Basic operations, indexing</div>
+        </div>
+        <div class="topic-item" data-topic="linked-list">
+          <div class="topic-item-title">Linked Lists</div>
+          <div class="topic-item-desc">Insertion, deletion, reversal</div>
+        </div>
+        <div class="topic-item" data-topic="stack-queue">
+          <div class="topic-item-title">Stacks & Queues</div>
+          <div class="topic-item-desc">LIFO and FIFO operations</div>
+        </div>
+        <div class="topic-item" data-topic="binary-tree">
+          <div class="topic-item-title">Binary Trees</div>
+          <div class="topic-item-desc">Traversal, insertion, deletion</div>
+        </div>
+        <div class="topic-item" data-topic="bst">
+          <div class="topic-item-title">Binary Search Tree</div>
+          <div class="topic-item-desc">BST properties, operations</div>
+        </div>
+        <div class="topic-item" data-topic="graph">
+          <div class="topic-item-title">Graphs</div>
+          <div class="topic-item-desc">BFS, DFS, representations</div>
+        </div>
+      </div>
+
+      <div class="topic-group">
+        <h3>Algorithms</h3>
+        <div class="topic-item" data-topic="bubble-sort">
+          <div class="topic-item-title">Bubble Sort</div>
+          <div class="topic-item-desc">Simple comparison sort</div>
+        </div>
+        <div class="topic-item" data-topic="merge-sort">
+          <div class="topic-item-title">Merge Sort</div>
+          <div class="topic-item-desc">Divide and conquer</div>
+        </div>
+        <div class="topic-item" data-topic="quick-sort">
+          <div class="topic-item-title">Quick Sort</div>
+          <div class="topic-item-desc">Partitioning algorithm</div>
+        </div>
+        <div class="topic-item" data-topic="binary-search">
+          <div class="topic-item-title">Binary Search</div>
+          <div class="topic-item-desc">Efficient searching</div>
+        </div>
+        <div class="topic-item" data-topic="bfs">
+          <div class="topic-item-title">BFS</div>
+          <div class="topic-item-desc">Breadth-first search</div>
+        </div>
+        <div class="topic-item" data-topic="dfs">
+          <div class="topic-item-title">DFS</div>
+          <div class="topic-item-desc">Depth-first search</div>
+        </div>
+      </div>
+
+      <div class="topic-group">
+        <h3>Patterns</h3>
+        <div class="topic-item" data-topic="two-pointers">
+          <div class="topic-item-title">Two Pointers</div>
+          <div class="topic-item-desc">Opposite ends technique</div>
+        </div>
+        <div class="topic-item" data-topic="sliding-window">
+          <div class="topic-item-title">Sliding Window</div>
+          <div class="topic-item-desc">Subarray problems</div>
+        </div>
+        <div class="topic-item" data-topic="fast-slow-pointers">
+          <div class="topic-item-title">Fast & Slow Pointers</div>
+          <div class="topic-item-desc">Cycle detection</div>
+        </div>
+        <div class="topic-item" data-topic="merge-intervals">
+          <div class="topic-item-title">Merge Intervals</div>
+          <div class="topic-item-desc">Overlapping ranges</div>
+        </div>
+        <div class="topic-item" data-topic="backtracking">
+          <div class="topic-item-title">Backtracking</div>
+          <div class="topic-item-desc">Explore all solutions</div>
+        </div>
+        <div class="topic-item" data-topic="dynamic-programming">
+          <div class="topic-item-title">Dynamic Programming</div>
+          <div class="topic-item-desc">Memoization patterns</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Content Area -->
+    <div class="content-area">
+      <!-- Visualization Container -->
+      <div class="visualization-container">
+        <div class="canvas-header">
+          <div>
+            <div class="canvas-title" id="viz-title">Select a topic to begin</div>
+            <div class="canvas-subtitle" id="viz-subtitle">Choose from the sidebar or ask a question</div>
+          </div>
+          <div class="playback-controls" id="playback-controls" style="display: none;">
+            <button class="control-btn" id="btn-restart" title="Restart">↺</button>
+            <button class="control-btn" id="btn-step-back" title="Previous Step">⏮</button>
+            <button class="control-btn primary" id="btn-play-pause" title="Play">▶</button>
+            <button class="control-btn" id="btn-step-forward" title="Next Step">⏭</button>
+            <div class="speed-control">
+              <span id="speed-display">1x</span>
+            </div>
+            <button class="control-btn" id="btn-speed" title="Speed">⚡</button>
+          </div>
+        </div>
+
+        <div class="canvas">
+          <svg id="viz-canvas"></svg>
+          <div class="empty-state" id="empty-state">
+            <div class="empty-state-icon">🎨</div>
+            <h3>Ready to Visualize</h3>
+            <p>Select a topic from the sidebar or describe what you want to learn in the chat below. I'll create an animated visualization with voice explanation!</p>
+          </div>
+        </div>
+
+        <div class="status-indicator" id="status-indicator" style="display: none;">
+          <div class="status-dot"></div>
+          <span id="status-text">Generating...</span>
+        </div>
+      </div>
+
+      <!-- Conversation Panel -->
+      <div class="conversation-panel">
+        <div class="conversation-header">
+          <div class="conversation-title">🎙️ Voice Conversation</div>
+        </div>
+        <div class="messages" id="messages">
+          <div class="message ai">
+            <div class="message-avatar">🤖</div>
+            <div class="message-content">
+              Hi! I can help you understand data structures and algorithms through voice and animations. Try asking: "Show me how binary search tree insertion works" or select a topic from the sidebar!
+            </div>
+          </div>
+        </div>
+        <div class="input-area">
+          <div class="input-wrapper">
+            <input type="text" id="text-input" placeholder="Type a message or click the mic to speak...">
+          </div>
+          <button class="mic-btn" id="mic-btn" title="Click to speak">
+            🎤
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // === CURSOR HIGHLIGHT EFFECT ===
+    const cursor = document.querySelector('.cursor-highlight');
+    let mouseX = 0, mouseY = 0;
+    let cursorX = 0, cursorY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    function animateCursor() {
+      cursorX += (mouseX - cursorX) * 0.1;
+      cursorY += (mouseY - cursorY) * 0.1;
+      cursor.style.left = cursorX + 'px';
+      cursor.style.top = cursorY + 'px';
+      requestAnimationFrame(animateCursor);
+    }
+
+    animateCursor();
+  </script>
+
+  <script src="visualize.js"></script>
+</body>
+</html>

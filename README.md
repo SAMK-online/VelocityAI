@@ -1,337 +1,323 @@
 <div align="center">
 
-# ⚡ KachowAI
+# ⚡ VelocityAI
 
-### Learn to Code Through Conversation
+### Master Data Structures & Algorithms Through Voice, Video, and Visualization
 
-**Stop typing. Start talking. Master algorithms with an AI mentor that understands your code and teaches through natural conversation.**
+**An AI-powered learning platform that combines voice mentoring, interactive visualizations, and video-enhanced learning to make DSA intuitive and engaging.**
 
-[![Try Demo](https://img.shields.io/badge/Try-Live_Demo-brightgreen.svg)](#getting-started)
-[![Watch Video](https://img.shields.io/badge/Watch-Demo_Video-red.svg)](#)
-[![Get Started](https://img.shields.io/badge/Get-Started-blue.svg)](#getting-started)
-
-[Why KachowAI?](#why-kachowai) • [See It In Action](#how-it-works) • [Get Started](#getting-started)
+[🎯 What We Built](#what-we-built) • [🎬 Demo](#demo) • [🚀 Getting Started](#getting-started) • [🛠️ Technologies](#technologies)
 
 </div>
 
 ---
 
-## 🎯 Why KachowAI?
+## 🎯 What We Built
 
-### Learning to code shouldn't feel like homework.
+VelocityAI is a comprehensive AI-powered learning platform with three core features designed to transform how you learn data structures and algorithms:
 
-You're stuck on an algorithm problem. You know what you need to do, but not *how* to do it. You could:
+### 1. **Vela - Voice AI Mentor** 🎙️
+An intelligent pair programming companion that teaches through Socratic dialogue:
+- **Real-time code awareness** - Watches your workspace and understands your code context
+- **Voice-first interaction** - Natural conversation using speech recognition and professional TTS
+- **Socratic teaching** - Guides you to discover solutions through strategic questions instead of giving answers
+- **Instant feedback** - Powered by Google Gemini 2.5 for sub-second responses
 
-❌ Read through dense LeetCode discussions  
-❌ Copy-paste Stack Overflow solutions without understanding  
-❌ Watch 20-minute YouTube tutorials  
-❌ Type out long questions to ChatGPT  
+### 2. **Video Solution Conversator** 📺
+AI-enhanced video learning with context-aware explanations:
+- **YouTube integration** - Watch NeetCode and other tutorial videos directly in the platform
+- **Automatic transcription** - Uses OpenAI Whisper to transcribe any YouTube video
+- **Timestamp-aware AI** - Vela knows exactly where you are in the video and can explain that specific moment
+- **Interactive Q&A** - Pause anytime to ask questions about what's being explained
 
-**Or you could just... talk about it.**
-
-### 🎤 Introducing Voice-First Learning
-
-KachowAI is your AI pair programming partner that:
-
-✅ **Sees your code in real-time** - No copy-pasting, ever  
-✅ **Speaks naturally** - Real conversations, not robotic responses  
-✅ **Teaches, doesn't tell** - Guides you to discover solutions yourself  
-✅ **Thinks with you** - Socratic questions that build understanding  
-
-Think of it as having a senior engineer sitting next to you—one who's patient, never judgmental, and available 24/7.
-
----
-
-## 💡 What Makes KachowAI Different?
-
-### 🎯 Voice-First Experience
-**Stop breaking your flow to type.** Just speak naturally and code. KachowAI responds instantly with clear, conversational guidance—not robotic text-to-speech.
-
-### 🔍 Automatic Context Awareness
-**No more "can you look at my code?"** KachowAI automatically watches your files and sees every change you make. It understands what you're working on without you saying a word.
-
-### 🎓 Socratic Teaching Method
-**Learn, don't just copy.** KachowAI never gives you the answer upfront. Instead, it asks the right questions to help you discover the solution yourself. This is how you actually learn.
-
-### ⚡ Powered by Cutting-Edge AI
-**Fast enough to feel real.** Gemini 2.5 Flash delivers instant responses with deep reasoning—no awkward pauses, just natural conversation flow.
-
-### 🚀 Seamless Experience
-**Works where you work.** No new IDE, no complex setup. Just code in your favorite editor while talking to your AI mentor.
+### 3. **Algorithm Visualizer** 🎨
+Educational animations with synchronized voice narration:
+- **AI-generated animations** - Gemini creates step-by-step GSAP visualizations for any algorithm
+- **Educational content** - Each visualization includes definitions, key points, use cases, and common problems
+- **Voice narration** - ElevenLabs professional voice synthesis explains each step
+- **Interactive controls** - Play, pause, adjust speed, and step through animations frame-by-frame
 
 ---
 
-## 🎬 How It Works
+## 💡 Why We Built This
 
-### 1️⃣ Choose Your Challenge
-Pick from classic algorithms or describe what you're working on.
+Learning data structures and algorithms is **hard** because:
+- ❌ Reading code doesn't show you *how* it works
+- ❌ Static diagrams don't capture the dynamic flow
+- ❌ Video tutorials don't adapt to your questions
+- ❌ You can't just "talk through" your confusion
 
-### 2️⃣ Start Talking
-Hit the mic button and start a conversation. Ask questions, think out loud, or explain your approach.
+**VelocityAI solves all of this** by combining:
+- ✅ **Voice interaction** - Think out loud and get immediate guidance
+- ✅ **Dynamic visualization** - See algorithms come alive step-by-step
+- ✅ **Video understanding** - AI that comprehends tutorial content
+- ✅ **Personalized teaching** - Adapts to your understanding level
 
+---
+
+## 🎬 Demo
+
+### Voice Mentor in Action
 ```
-You: "I'm working on Two Sum but I'm not sure where to start"
+You: "How do I approach the two sum problem?"
 
-AI: "Great problem! Before we dive in, what do you think 
-     the problem is really asking you to find?"
-```
+Vela: "Great question! Before we dive into code, what is the problem
+      really asking us to find?"
 
-### 3️⃣ Code While You Talk
-Write your solution in your editor. KachowAI sees every keystroke and understands your thought process.
+You: "We need to find two numbers that add up to a target"
 
-### 4️⃣ Get Guided, Not Given Answers
-The AI asks strategic questions that help you discover patterns and build intuition.
-
-```
-AI: "What data structure allows you to check if an element 
-     exists in constant time?"
+Vela: "Exactly! And what data structure allows you to check if an
+      element exists in constant time?"
 
 You: "A hash map?"
 
-AI: "Exactly! So when you're iterating through the array, 
-     what could you store in that hash map?"
+Vela: "Perfect! Now think about this - as you iterate through the array,
+      what could you store in that hash map to help you find the pair?"
 ```
 
-### 5️⃣ Test & Iterate
-Run your code against test cases. The AI helps you debug and optimize based on the results.
+### Video Solution Conversator
+- Load any YouTube coding tutorial
+- AI auto-transcribes with Whisper
+- Ask "Why did he use a hash map here?"
+- Vela explains based on the exact timestamp
 
-**This is how you build lasting skills—not just pass the test.**
+### Algorithm Visualizer
+- Click "Binary Search Tree" → Watch nodes animate in real-time
+- See insertions, rotations, and traversals step-by-step
+- Hear voice explanations synchronized with animations
+- Learn through visual storytelling
 
 ---
 
-## 🌟 Perfect For
+## 🛠️ Technologies
 
-### 📚 Students
-Preparing for technical interviews? Learn patterns and intuition, not just memorized solutions.
+### Frontend
+- **Vanilla JavaScript** - Fast, lightweight, no framework overhead
+- **GSAP (GreenSock)** - Professional animation engine for visualizations
+- **Web Speech API** - Browser-native speech recognition
+- **YouTube IFrame API** - Embedded video player integration
 
-### 💼 Professionals
-Level up your algorithm skills while getting work done. Learn efficiently through conversation.
+### Backend
+- **Python 3.9+** - Main application language
+- **FastAPI** - High-performance async web framework
+- **WebSockets** - Real-time bidirectional communication
+- **Uvicorn** - Lightning-fast ASGI server
 
-### 🎯 Bootcamp Grads
-Bridge the gap between tutorials and real problem-solving. Build confidence through guided practice.
+### AI & ML Services
+- **Google Gemini 2.5 Flash** - Advanced reasoning and code understanding (1M+ token context)
+- **ElevenLabs API** - Professional voice synthesis (neural TTS)
+- **OpenAI Whisper** - Automatic speech-to-text transcription for YouTube videos
 
-### 🚀 Self-Learners
-Stuck on a problem? No more hours of Googling. Get personalized guidance that adapts to your level.
+### Additional Tools
+- **youtube-transcript-api** - Fetch existing YouTube captions
+- **yt-dlp** - Download YouTube audio for transcription
+- **Watchdog** - Real-time file system monitoring for code awareness
+- **python-dotenv** - Environment variable management
 
 ---
 
-## ⚡ Getting Started
+## 🚀 Getting Started
 
-### Quick Setup (5 minutes)
+### Prerequisites
+- Python 3.9+
+- Google Gemini API key (free at [ai.google.dev](https://ai.google.dev/))
+- (Optional) ElevenLabs API key for premium voice
+- (Optional) OpenAI API key for video transcription
 
-**1. Clone & Install**
+### Installation
+
+**1. Clone the repository**
 ```bash
-git clone https://github.com/SAMK-online/KachowAI.git
-cd KachowAI
-cd backend && pip install -r requirements.txt
+git clone https://github.com/yourusername/VelocityAI.git
+cd VelocityAI
 ```
 
-**2. Add Your API Key**
+**2. Install backend dependencies**
 ```bash
-# Create .env file
+cd backend
+pip install -r requirements.txt
+```
+
+**3. Configure environment variables**
+```bash
+# Copy example config
 cp .env.example .env
 
-# Add your Gemini API key (get it free at ai.google.dev)
-GEMINI_API_KEY=your_key_here
-WORKSPACE_DIR=/path/to/your/code
+# Edit .env and add your API keys
+GEMINI_API_KEY=your_gemini_key_here
+ELEVENLABS_API_KEY=your_elevenlabs_key_here  # Optional
+OPENAI_API_KEY=your_openai_key_here           # Optional, for video transcription
+WORKSPACE_DIR=/path/to/your/code/directory
 ```
 
-**3. Launch**
+**4. Start the servers**
+
+Terminal 1 - Backend:
 ```bash
-uvicorn app:app --reload --port 8000
-# Open http://localhost:8000
+cd backend
+uvicorn app:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-**That's it! Click the mic button and start learning.**
-
----
-
-## 🎯 Real User Scenarios
-
-### Scenario 1: Interview Prep
-> *"I'm interviewing at Google next week and need to review dynamic programming."*
-
-KachowAI helps you:
-- Identify DP patterns across problems
-- Build intuition for state transitions
-- Explain time/space trade-offs naturally
-- Practice thinking out loud (crucial for interviews!)
-
-### Scenario 2: Stuck on LeetCode
-> *"I've been staring at this problem for an hour and I'm lost."*
-
-Instead of giving up or looking at solutions:
-- Talk through what you understand so far
-- Get strategic hints without spoiling the solution
-- Learn the underlying pattern for future problems
-
-### Scenario 3: Learning a New Concept
-> *"I keep hearing about 'two pointers' but don't really get when to use it."*
-
-KachowAI walks you through:
-- Problems that showcase the pattern
-- When and why the technique works
-- How to recognize it in the future
-- Real-time feedback as you implement it
-
----
-
-## 🏗️ What's Inside
-
-### Smart Features You'll Love
-
-**🎤 Natural Voice Interface**  
-Continuous conversation sessions that feel like talking to a real person
-
-**👀 Real-Time Code Watching**  
-Automatically tracks your files—supports Python, JavaScript, TypeScript, C++, Go, Rust, and more
-
-**🧠 Intelligent Teaching**  
-Progressive hints that adapt to your understanding level
-
-**⚡ Instant Feedback**  
-Run code against test cases and get immediate results
-
-**🔊 Professional Audio**  
-Crystal-clear voice responses (ElevenLabs + browser fallback)
-
-**💻 Language Support**  
-Works with 10+ programming languages
-
----
-
-## 🚀 Deploy to Production
-
-### One-Command Cloud Deploy
-
+Terminal 2 - Frontend:
 ```bash
-./deploy.sh
+cd frontend
+python3 -m http.server 3000
 ```
 
-Deploys to Google Cloud Run with:
-- ✅ Auto-scaling (handles 0 to 1000s of users)
-- ✅ Global CDN with HTTPS
-- ✅ 99.9% uptime SLA
-- ✅ Free tier: 2M requests/month
-
-Perfect for:
-- Running it for your study group
-- Sharing with your team
-- Building on top of KachowAI
-
-See [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md) for details.
-
----
-
-## 🎓 The KachowAI Teaching Philosophy
-
-### We Don't Just Give Answers. We Build Understanding.
-
-Traditional learning platforms:
-- Show you the solution
-- Explain how it works
-- Hope you remember it later
-
-**KachowAI's approach:**
-1. **Start with understanding** - What is the problem really asking?
-2. **Explore approaches** - What could work? What won't work? Why?
-3. **Guide discovery** - Help you recognize patterns on your own
-4. **Build intuition** - Connect to concepts you already know
-5. **Solidify knowledge** - Ensure you can apply it to new problems
-
-### Real Learning Example
-
+**5. Open in browser**
 ```
-You: "Can you help me optimize this nested loop?"
-
-AI: "Before we optimize, what's the time complexity of your 
-     current approach?"
-
-You: "O of N squared"
-
-AI: "Right. And what makes it N squared—what causes the nested iteration?"
-
-You: "I'm checking every element against every other element"
-
-AI: "Exactly! So what if there was a way to check if an element 
-     exists without iterating through the whole array?"
-
-You: "Oh! Using a hash map?"
-
-AI: "You got it! Now walk me through how that would change your algorithm..."
+http://localhost:3000/landing.html
 ```
 
-**You didn't just get an answer. You learned to think like an engineer.**
+---
+
+## 📁 Project Structure
+
+```
+VelocityAI/
+├── frontend/
+│   ├── landing.html          # Landing page
+│   ├── practice-unified.html # Main practice interface
+│   ├── practice-unified.js   # Voice mentor + video solution logic
+│   ├── visualize.html        # Algorithm visualizer
+│   ├── visualize.js          # Animation engine
+│   └── problems.js           # Problem database (8+ DSA problems)
+│
+├── backend/
+│   ├── app.py                # FastAPI server with WebSocket
+│   ├── requirements.txt      # Python dependencies
+│   ├── .env.example          # Environment config template
+│   └── transcripts_cache/    # Cached YouTube transcriptions
+│
+└── README.md
+```
 
 ---
 
-## 🗺️ Product Roadmap
+## 🎯 Key Features Breakdown
 
-### 🎯 Today: Master Algorithms Through Voice
-- Voice-first learning for data structures & algorithms
-- Real-time code context awareness
-- Socratic teaching methodology
-- Python execution with test cases
+### Real-Time Code Awareness
+```python
+# Backend watches your workspace
+from watchdog.observers import Observer
 
-### 🚀 Next: Full IDE Integration
-- VS Code, Cursor, Windsurf extensions
-- Multi-file codebase understanding
-- Debugging assistance through conversation
-- Code review guidance
+# Automatically detects changes in .py, .js, .ts, .cpp, .java, etc.
+# Sends updated context to Gemini for intelligent responses
+```
 
-### 🌍 Future: Universal Coding Companion
-- System design discussions
-- Architecture guidance
-- Multi-language support
-- Team collaboration features
-- Interview simulation mode
+### Voice Synthesis
+```python
+# Professional TTS with ElevenLabs
+async def synthesize_tts(text: str, voice_id: str):
+    # Speed optimized for learning (1.1x)
+    # Clear, natural-sounding AI voice
+    # Fallback to browser TTS if API unavailable
+```
 
----
+### AI-Generated Animations
+```python
+# Gemini generates complete visualization JSON
+{
+  "educational": {
+    "definition": "Binary Search Tree is...",
+    "keyPoints": ["...", "...", "..."],
+    "whenToUse": "Use when...",
+    "commonProblems": ["...", "..."]
+  },
+  "steps": [
+    {
+      "commands": [
+        {"command": "CREATE_NODE", "id": "node1", "value": 15}
+      ],
+      "narration": "First, we insert 15 as the root node",
+      "duration": 2000
+    }
+  ]
+}
+```
 
-## 💬 What Developers Say
-
-> *"This is how I wish I learned algorithms in college. Actually understanding, not memorizing."*
-
-> *"I've been coding for 3 years and never really got dynamic programming. Had a 10-minute conversation with KachowAI and it finally clicked."*
-
-> *"The voice interface is a game-changer. I can think and code at the same time without breaking flow."*
-
----
-
-## 🤝 Join the Movement
-
-### Help Us Build the Future of Learning
-
-We're building the voice layer for coding. If you believe in this vision:
-
-⭐ **Star this repo** to show support  
-🐛 **Report issues** to help us improve  
-💡 **Share ideas** for new features  
-🔧 **Contribute code** to make it better  
-📢 **Spread the word** to help others learn better  
-
----
-
-## 📚 Resources
-
-- **[Quick Start Guide](QUICK_START.md)** - Get up and running in 5 minutes
-- **[Deployment Guide](DEPLOYMENT_GUIDE.md)** - Deploy to production
-- **[Voice Setup](TTS_SETUP_GUIDE.md)** - Configure voice settings
-- **[API Documentation](#)** - Build on top of KachowAI
+### Video Transcription Pipeline
+```python
+# Fallback chain for robust transcription
+1. Try YouTube's existing captions (fast)
+2. Use yt-dlp to download audio
+3. Transcribe with OpenAI Whisper
+4. Cache result for instant future access
+```
 
 ---
 
-## 📞 Get Help
+## 🌟 What Makes VelocityAI Special
 
-Have questions? We're here to help:
+### 1. **Multimodal Learning**
+Not just text, not just video, not just animations - **all three combined** with AI guidance.
 
-- 💬 **[GitHub Discussions](https://github.com/SAMK-online/KachowAI/discussions)** - Ask questions, share tips
-- 🐛 **[GitHub Issues](https://github.com/SAMK-online/KachowAI/issues)** - Report bugs, request features
-- 📧 **Email** - Reach out directly for support
+### 2. **Context-Aware AI**
+Vela understands:
+- What code you're writing (file watching)
+- What video you're watching (transcript analysis)
+- What concept you're visualizing (animation state)
+
+### 3. **Voice-First Design**
+Built for conversation, not typing. Natural speech recognition with professional TTS creates a fluid learning experience.
+
+### 4. **Educational Content**
+Every visualization includes:
+- Formal definitions
+- Key concepts
+- Real-world use cases
+- Common problem patterns
+
+### 5. **Production-Ready**
+- WebSocket for real-time communication
+- Caching for performance (transcript cache, file watching)
+- Error handling and fallbacks
+- CORS configured for cross-origin requests
 
 ---
 
-## 📄 License
+## 🎓 Use Cases
+
+### For Students
+- **Interview prep** - Practice explaining your thinking out loud
+- **Concept mastery** - See and hear algorithms in action
+- **Video learning** - Get clarification on tutorial videos instantly
+
+### For Educators
+- **Teach visually** - Use visualizer to demonstrate concepts
+- **Assess understanding** - Students practice Socratic dialogue
+- **Supplement videos** - Add interactive Q&A to video content
+
+### For Self-Learners
+- **Build intuition** - Voice mentor helps you discover patterns
+- **Debug thinking** - Talk through your approach to find gaps
+- **Learn your way** - Combine video, voice, and visuals as needed
+
+---
+
+## 🏗️ Technical Highlights
+
+### Performance
+- **Sub-second AI responses** using Gemini 2.5 Flash
+- **Cached transcriptions** avoid re-processing videos
+- **Real-time file watching** with debouncing to prevent spam
+- **WebSocket streaming** for instant message delivery
+
+### Scalability
+- **Async Python** with FastAPI for concurrent users
+- **Stateless backend** ready for horizontal scaling
+- **CDN-friendly frontend** (static HTML/JS/CSS)
+- **API-first architecture** easy to extend
+
+### Reliability
+- **Graceful fallbacks** (ElevenLabs → Browser TTS)
+- **Error recovery** (Transcript API → Scraper → Whisper)
+- **Health checks** for monitoring
+- **Auto-reload** in development mode
+
+---
+
+## 📝 License
 
 MIT License - Free to use, modify, and build upon.
 
@@ -339,18 +325,14 @@ MIT License - Free to use, modify, and build upon.
 
 <div align="center">
 
-### 🚀 Ready to Transform How You Learn?
+### 🚀 Built for Hackathon PatHack 2026
 
-Stop reading tutorials. Start having conversations.
+**Technologies:** Python • FastAPI • JavaScript • GSAP • Google Gemini • ElevenLabs • OpenAI Whisper
 
-**[Get Started Now](#getting-started)** • **[Watch Demo](#)** • **[View Docs](#)**
+**Team:** VelocityAI
 
----
+⭐ **Star this repo** if you believe in better ways to learn!
 
-**Built with ⚡ for developers who learn by doing**
-
-*Stop typing. Start talking. Master coding.*
-
-⭐ Star this repo if you believe in voice-first learning
+[Get Started](#getting-started) • [View Demo](#demo)
 
 </div>

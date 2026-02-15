@@ -4,3 +4,7 @@ httpx
 python-dotenv
 google-generativeai
 watchdog
+youtube-transcript-api
+google-api-python-client
+yt-dlp
+openai

@@ -1,22 +1,135 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KachowAI - The Voice Layer for Peer Programming</title>
-  <meta name="description" content="Voice-first AI peer programmer that bridges humans and AI-powered coding tools through natural conversation.">
+  <title>VelocityAI - Learn Data Structures and Algorithms at Lightning Speed</title>
+  <meta name="description" content="Master algorithms with AI-powered voice mentoring and interactive visualizations. Your complete DSA learning companion.">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+    /* Premium Dark Educational Platform Design */
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+    /* === INTRO SCREEN === */
+    #intro-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: var(--bg-primary, #0f172a);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    #intro-screen::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+      background-size: 64px 64px;
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    #logo-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      position: relative;
+      z-index: 2;
+    }
+
+    #logo-box-intro {
+      width: 80px;
+      height: 80px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      opacity: 0;
+      position: relative;
+    }
+
+    #logo-text-intro {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 64px;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      color: var(--text-primary, #ffffff);
+      opacity: 0;
+      text-align: center;
+    }
+
+    #loader-bar {
+      height: 2px;
+      width: 0;
+      background: linear-gradient(to right, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.8));
+      border-radius: 2px;
+      margin-top: 16px;
+      margin-bottom: 24px;
+    }
+
+    #sub-text {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: rgba(255, 255, 255, 0.55);
+      font-weight: 600;
+      opacity: 0;
+      text-align: center;
+    }
+
+    #enter-btn {
+      margin-top: 48px;
+      padding: 12px 28px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: transparent;
+      color: var(--text-primary, #ffffff);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      opacity: 0;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      font-family: 'Inter', sans-serif;
+    }
+
+    #enter-btn:hover {
+      background: rgba(255, 255, 255, 1);
+      color: #0f172a;
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    #main-content {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    /* Hide scroll cue initially */
+    #main-content .scroll-cue {
+      opacity: 0;
+    }
 
     :root {
-      --background: #000000;
-      --foreground: #ffffff;
-      --card: rgba(23, 23, 23, 0.6);
-      --border: rgba(255, 255, 255, 0.08);
-      --accent: #22d3ee;
-      --accent-glow: rgba(34, 211, 238, 0.3);
-      --muted: rgba(255, 255, 255, 0.6);
-      --radius: 0.75rem;
+      /* Dark Slate Theme */
+      --bg-primary: #0f172a;
+      --bg-elevated: #1e293b;
+      --text-primary: #ffffff;
+      --text-muted: rgba(255, 255, 255, 0.7);
+      --text-dimmed: rgba(255, 255, 255, 0.55);
+      --border-subtle: rgba(255, 255, 255, 0.25);
+      --border-light: rgba(255, 255, 255, 0.08);
+      --bg-card: rgba(255, 255, 255, 0.02);
+      --bg-card-hover: rgba(255, 255, 255, 0.04);
     }
 
     * {
@@ -31,629 +144,1161 @@
 
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #000000;
-      color: #ffffff;
+      font-weight: 400;
+      background: var(--bg-primary);
+      color: var(--text-primary);
       overflow-x: hidden;
       line-height: 1.6;
+      position: relative;
     }
 
-    /* Mouse Glow Effect */
-    .mouse-glow {
+    /* Typography System */
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+    }
+
+    .uppercase-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-weight: 600;
+    }
+
+    /* === NOISE TEXTURE OVERLAY === */
+    .noise-overlay {
       position: fixed;
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, rgba(34, 211, 238, 0.15), transparent 70%);
+      inset: 0;
+      opacity: 0.08;
+      mix-blend-mode: overlay;
       pointer-events: none;
-      transform: translate(-50%, -50%);
-      transition: opacity 0.3s;
-      z-index: 1;
-      opacity: 0;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/></filter><rect width="180" height="180" filter="url(%23n)" opacity="0.9"/></svg>');
+      z-index: 999;
     }
 
-    /* Grid Background */
-    .bg-grid {
+    /* === GRID BACKDROP === */
+    .grid-backdrop {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      inset: 0;
       background-image:
-        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-      background-size: 60px 60px;
+        linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: linear-gradient(to bottom, black 50%, transparent);
       pointer-events: none;
       z-index: 0;
     }
 
-    /* Glass Card */
-    .glass-card {
-      background: linear-gradient(145deg, rgba(23, 23, 23, 0.6), rgba(10, 10, 10, 0.4));
-      backdrop-filter: blur(12px) saturate(180%);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      border-radius: var(--radius);
+    /* === LINEAR GLOWS === */
+    .linear-glow {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
     }
 
-    .glass-premium {
-      background: rgba(23, 23, 23, 0.4);
-      backdrop-filter: blur(20px) saturate(180%);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    .linear-glow::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 240px;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.08), transparent);
+    }
+
+    .linear-glow::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 192px;
+      background: linear-gradient(to top, rgba(255, 255, 255, 0.04), transparent);
+    }
+
+    /* === SCANNER LINES ANIMATION === */
+    @keyframes scan-horizontal {
+      0%, 100% { transform: translateY(-10%); opacity: 0; }
+      50% { opacity: 0.6; }
+      100% { transform: translateY(110%); }
+    }
+
+    @keyframes scan-vertical {
+      0%, 100% { transform: translateX(-10%); opacity: 0; }
+      50% { opacity: 0.4; }
+      100% { transform: translateX(110%); }
+    }
+
+    .scanner-lines {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .scanner-line-h {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.3);
+      animation: scan-horizontal 4s linear infinite;
+      pointer-events: none;
+    }
+
+    .scanner-line-v {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1px;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.2);
+      animation: scan-vertical 5s linear infinite;
+      animation-delay: 0.8s;
+      pointer-events: none;
+    }
+
+    /* === CURSOR HIGHLIGHT === */
+    .cursor-highlight {
+      position: fixed;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.06), transparent 70%);
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 5;
+      transition: opacity 0.3s;
     }
 
     /* Container */
     .container {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 0 24px;
+      padding: 0 2rem;
       position: relative;
       z-index: 2;
     }
 
-    /* Navbar */
+    /* Navigation Bar */
     nav {
-      position: sticky;
+      position: fixed;
       top: 0;
+      left: 0;
+      right: 0;
       z-index: 50;
-      animation: slideDown 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
 
     .nav-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 12px 32px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 20px 0;
     }
 
     .logo {
-      font-size: 24px;
-      font-weight: 800;
-      color: white;
-      text-decoration: none;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .logo-box {
+      position: relative;
+      width: 36px;
+      height: 36px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .logo-text-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .logo-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1;
+    }
+
+    .logo-subtitle {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-dimmed);
+      line-height: 1;
     }
 
     .nav-links {
       display: flex;
-      gap: 32px;
+      gap: 2rem;
       align-items: center;
     }
 
     .nav-link {
-      color: var(--muted);
+      color: var(--text-muted);
       text-decoration: none;
       font-weight: 500;
-      transition: color 0.2s;
-      font-size: 15px;
+      font-size: 14px;
+      transition: color 0.3s ease;
     }
 
     .nav-link:hover {
-      color: white;
+      color: var(--text-primary);
     }
 
-    .nav-link.external {
-      display: flex;
+    /* === MAGNETIC BUTTONS === */
+    .btn-magnetic {
+      position: relative;
+      display: inline-flex;
       align-items: center;
-      gap: 4px;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 20px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      border: 1px solid var(--border-subtle);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform;
+      cursor: pointer;
+      text-decoration: none;
+      font-family: 'Inter', sans-serif;
     }
 
-    /* Buttons */
     .btn-primary {
-      background: var(--accent);
-      color: #000;
-      padding: 12px 24px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 15px;
-      transition: all 0.2s;
-      display: inline-block;
-      border: none;
-      cursor: pointer;
+      background: white;
+      color: var(--bg-primary);
+      border-color: rgba(255, 255, 255, 0.3);
     }
 
     .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(34, 211, 238, 0.4);
-    }
-
-    .btn-large {
-      padding: 16px 32px;
-      font-size: 17px;
-      font-weight: 700;
+      background: rgba(255, 255, 255, 0.95);
     }
 
     .btn-secondary {
-      background: transparent;
-      color: white;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: var(--bg-card);
+      color: var(--text-primary);
+      border-color: var(--border-subtle);
     }
 
     .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.05);
-      border-color: rgba(255, 255, 255, 0.2);
+      background: var(--bg-card-hover);
     }
 
-    /* Hero Section */
-    .hero {
-      padding: 120px 0 80px;
-      text-align: center;
-      position: relative;
-      z-index: 2;
-    }
-
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 16px;
-      background: rgba(34, 211, 238, 0.1);
-      border: 1px solid rgba(34, 211, 238, 0.2);
-      border-radius: 100px;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--accent);
-      margin-bottom: 32px;
-      animation: scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s backwards;
-    }
-
-    .pulse-dot {
-      width: 8px;
-      height: 8px;
-      background: var(--accent);
-      border-radius: 50%;
-      animation: pulse 2s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(0.8); }
-    }
-
-    .hero-title {
-      font-size: 72px;
-      font-weight: 900;
-      line-height: 1.1;
-      letter-spacing: -0.04em;
-      margin-bottom: 24px;
-      background: linear-gradient(180deg, #ffffff 0%, rgba(255,255,255,0.7) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s backwards;
-    }
-
-    .hero-subtitle {
-      font-size: 20px;
-      color: var(--muted);
-      max-width: 700px;
-      margin: 0 auto 40px;
-      line-height: 1.6;
-      animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s backwards;
-    }
-
-    .hero-description {
-      font-size: 17px;
-      color: var(--muted);
-      max-width: 800px;
-      margin: 0 auto 48px;
-      line-height: 1.8;
-      animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s backwards;
-    }
-
-    .hero-cta {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.6s backwards;
-    }
-
-    /* Powered By Section */
-    .powered-by {
-      padding: 60px 0;
-      text-align: center;
-    }
-
-    .powered-by-title {
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--muted);
-      margin-bottom: 32px;
-      font-weight: 600;
-    }
-
-    .powered-by-logos {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 48px;
-      flex-wrap: wrap;
-    }
-
-    .powered-by-logo {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      opacity: 0.8;
+    /* Shine effect on hover */
+    .btn-magnetic::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(255, 255, 255, 0.14), transparent, rgba(255, 255, 255, 0.14));
+      opacity: 0;
       transition: opacity 0.3s;
+      pointer-events: none;
     }
 
-    .powered-by-logo:hover {
+    .btn-magnetic:hover::after {
       opacity: 1;
     }
 
-    .logo-icon {
-      font-size: 48px;
-      filter: grayscale(1);
-      transition: filter 0.3s;
-    }
-
-    .powered-by-logo:hover .logo-icon {
-      filter: grayscale(0);
-    }
-
-    .logo-name {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--muted);
-    }
-
-    /* Vision Section */
-    .vision {
-      padding: 80px 0;
-    }
-
-    .vision-header {
+    /* === HERO SECTION === */
+    .hero {
+      padding: 140px 0 80px;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      overflow: hidden;
+      min-height: 90vh;
       display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 3;
+    }
+
+    .tags-row {
+      display: flex;
+      justify-content: center;
       align-items: center;
-      gap: 24px;
-      margin-bottom: 48px;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
     }
 
-    .vision-title {
-      font-size: 48px;
-      font-weight: 800;
-      color: white;
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-card);
+      padding: 6px 12px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+      font-weight: 600;
     }
 
-    .vision-separator {
-      flex: 1;
-      height: 1px;
-      background: rgba(255, 255, 255, 0.1);
+    .tag svg {
+      width: 14px;
+      height: 14px;
+      opacity: 0.8;
     }
 
-    .vision-content {
-      max-width: 900px;
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 64px;
+      font-weight: 600;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+      color: var(--text-primary);
+    }
+
+    .hero-subtitle {
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--text-muted);
+      max-width: 700px;
+      margin: 0 auto 3rem;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      margin-bottom: 4rem;
+    }
+
+    /* === STATS GRID === */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      max-width: 600px;
       margin: 0 auto;
     }
 
-    .vision-text {
-      font-size: 18px;
-      line-height: 1.8;
-      color: rgba(255, 255, 255, 0.8);
-      margin-bottom: 24px;
-    }
-
-    .vision-highlight {
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--accent);
-      margin: 40px 0;
+    .stat {
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-card);
+      padding: 20px 16px;
       text-align: center;
+      position: relative;
+      overflow: hidden;
     }
 
-    /* Feature Boxes */
-    .feature-boxes {
+    .stat::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.04), transparent);
+    }
+
+    .stat-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1;
+      position: relative;
+    }
+
+    .stat-label {
+      margin-top: 8px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-dimmed);
+      font-weight: 500;
+      position: relative;
+    }
+
+    /* === SCROLL CUE === */
+    @keyframes scroll-bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(8px); }
+    }
+
+    .scroll-cue {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-card);
+      padding: 8px 16px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-dimmed);
+      animation: scroll-bounce 2s ease-in-out infinite;
+      opacity: 1;
+      transition: opacity 0.3s ease;
+      z-index: 5;
+    }
+
+    .scroll-cue svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* === SECTION HEADERS WITH EYEBROW === */
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-card);
+      padding: 6px 12px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .eyebrow svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .section-title {
+      margin-top: 20px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 48px;
+      font-weight: 600;
+      line-height: 1.2;
+      letter-spacing: -0.03em;
+      color: var(--text-primary);
+    }
+
+    .section-subtitle {
+      margin-top: 16px;
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--text-muted);
+    }
+
+    /* === SECTIONS === */
+    section {
+      padding: 80px 0;
+      position: relative;
+    }
+
+    /* === FEATURE CARDS === */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-top: 3rem;
+    }
+
+    .feature-card {
+      position: relative;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-card);
+      padding: 32px;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.06), transparent);
+      opacity: 0;
+      transition: opacity 0.5s;
+      pointer-events: none;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .feature-card:hover::before {
+      opacity: 1;
+    }
+
+    /* Icon Box - 44x44px square */
+    .icon-box {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-card);
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+
+    .icon-box svg {
+      width: 20px;
+      height: 20px;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .feature-title {
+      margin-top: 16px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .feature-desc {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text-muted);
+    }
+
+    /* === BADGES === */
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-card);
+      color: var(--text-muted);
+    }
+
+    .badge.new {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.3);
+      color: var(--text-primary);
+    }
+
+    /* === PRICING CARDS === */
+    .pricing-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 24px;
-      margin-top: 60px;
+      margin-top: 3rem;
     }
 
-    .feature-box {
+    .pricing-card {
+      position: relative;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-card);
       padding: 32px;
-      background: rgba(23, 23, 23, 0.4);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      border-radius: 12px;
-      transition: all 0.3s;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
     }
 
-    .feature-box:hover {
-      border-color: rgba(34, 211, 238, 0.3);
-      transform: translateY(-4px);
+    .pricing-card.featured {
+      border-color: rgba(255, 255, 255, 0.35);
+      background: rgba(255, 255, 255, 0.03);
     }
 
-    .feature-box-icon {
-      font-size: 36px;
+    .pricing-card.featured::before {
+      content: 'Most Popular';
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-card);
+      padding: 4px 12px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .pricing-card::after {
+      content: '';
+      position: absolute;
+      bottom: -96px;
+      right: -96px;
+      width: 224px;
+      height: 224px;
+      background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.1), transparent);
+      filter: blur(40px);
+      pointer-events: none;
+    }
+
+    /* === TESTIMONIALS === */
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin-top: 3rem;
+    }
+
+    .testimonial {
+      position: relative;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-card);
+      padding: 28px;
+      overflow: hidden;
+    }
+
+    .testimonial::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), transparent);
+      pointer-events: none;
+    }
+
+    .stars {
+      display: flex;
+      gap: 4px;
+      color: rgba(255, 255, 255, 0.75);
       margin-bottom: 16px;
     }
 
-    .feature-box-title {
-      font-size: 20px;
-      font-weight: 700;
-      color: white;
-      margin-bottom: 12px;
+    .stars svg {
+      width: 16px;
+      height: 16px;
     }
 
-    .feature-box-description {
-      font-size: 15px;
-      color: var(--muted);
+    .quote {
+      margin-top: 16px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
       line-height: 1.6;
+      color: rgba(255, 255, 255, 0.8);
+      position: relative;
     }
 
-    /* CTA Section */
-    .cta {
-      padding: 100px 0;
-      text-align: center;
+    .author {
+      margin-top: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
     }
 
-    .cta-title {
-      font-size: 48px;
-      font-weight: 800;
-      margin-bottom: 24px;
+    .role {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-dimmed);
+      margin-top: 4px;
     }
 
-    .cta-subtitle {
-      font-size: 20px;
-      color: var(--muted);
-      margin-bottom: 40px;
+    /* === FLOATING CALLOUTS === */
+    @keyframes float-gentle {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    .callout {
+      position: absolute;
+      border: 1px solid var(--border-subtle);
+      background: rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(8px);
+      padding: 12px 16px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+      font-weight: 600;
+      z-index: 10;
+      animation: float-gentle 4s ease-in-out infinite;
     }
 
     /* Footer */
     footer {
-      padding: 60px 0 40px;
-      border-top: 1px solid var(--border);
+      padding: 4rem 2rem;
+      border-top: 1px solid var(--border-subtle);
+      background: var(--bg-primary);
     }
 
     .footer-content {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
     .footer-text {
-      color: var(--muted);
+      color: var(--text-muted);
       font-size: 14px;
+      font-weight: 400;
     }
 
     .footer-links {
       display: flex;
-      gap: 32px;
+      gap: 2rem;
     }
 
     .footer-link {
-      color: var(--muted);
+      color: var(--text-muted);
       text-decoration: none;
       font-size: 14px;
-      transition: color 0.2s;
+      font-weight: 400;
+      transition: color 0.3s;
     }
 
     .footer-link:hover {
-      color: white;
+      color: var(--text-primary);
     }
 
-    /* Animations */
-    @keyframes slideDown {
-      from {
-        transform: translateY(-100%);
-        opacity: 0;
-      }
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
+    /* Fade-in animations */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s ease;
     }
 
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
-    @keyframes scaleIn {
-      from {
-        opacity: 0;
-        transform: scale(0.9);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-
-    /* Responsive */
+    /* Responsive Design */
     @media (max-width: 768px) {
-      .hero-title {
-        font-size: 48px;
+      .container {
+        padding: 0 1.5rem;
+      }
+
+      .nav-content {
+        padding: 12px 16px;
       }
 
       .nav-links {
         display: none;
       }
 
-      .hero-cta {
-        flex-direction: column;
+      .hero {
+        padding: 100px 0 60px;
+        min-height: auto;
       }
 
-      .vision-header {
-        flex-direction: column;
-        text-align: center;
+      .hero h1 {
+        font-size: 40px;
       }
 
-      .vision-separator {
-        width: 100%;
-      }
-
-      .vision-title {
-        font-size: 36px;
-      }
-
-      .vision-text {
+      .hero-subtitle {
         font-size: 16px;
       }
 
-      .powered-by-logos {
-        gap: 32px;
+      .hero-buttons {
+        flex-direction: column;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .section-title {
+        font-size: 36px;
+      }
+
+      .feature-grid,
+      .pricing-grid,
+      .testimonial-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .callout {
+        display: none;
+      }
+
+      .cursor-highlight {
+        display: none;
+      }
+
+      .footer-content {
+        flex-direction: column;
+        gap: 1.5rem;
+        text-align: center;
+      }
+
+      /* Responsive technology cards */
+      #vision div[style*="grid-template-columns: 1fr 1fr"] {
+        grid-template-columns: 1fr !important;
       }
     }
   </style>
 </head>
 <body>
-  <div class="mouse-glow" id="mouseGlow"></div>
-  <div class="bg-grid"></div>
+  <!-- INTRO SCREEN -->
+  <div id="intro-screen">
+    <div id="logo-container">
+      <div id="logo-box-intro">
+        <svg viewBox="0 0 100 100" style="width: 50px; height: 50px; position: relative; z-index: 1;">
+          <defs>
+            <linearGradient id="vGradientIntro" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#6ee7b7;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#7dd3fc;stop-opacity:1" />
+            </linearGradient>
+          </defs>
+          <path d="M 30 20 L 50 70 L 70 20 L 85 20 L 50 90 L 15 20 Z" fill="url(#vGradientIntro)"/>
+          <path d="M 60 15 L 75 30 L 70 30 L 70 45 L 60 45 L 60 30 L 55 30 Z" fill="url(#vGradientIntro)"/>
+        </svg>
+      </div>
+      <h1 id="logo-text-intro">VelocityAI</h1>
+    </div>
+    <div id="loader-bar"></div>
+    <p id="sub-text">Initialize Learning Protocol</p>
 
-  <!-- Navbar -->
-  <nav class="glass-premium">
-    <div class="container">
-      <div class="nav-content">
-        <a href="/" class="logo">
-          ⚡ <span>KachowAI</span>
-        </a>
-        <div class="nav-links">
-          <a href="https://github.com/yourusername/kachowai" target="_blank" class="nav-link external">
-            GitHub ↗
-          </a>
-          <a href="/app" class="btn-primary">Launch App</a>
+    <button id="enter-btn">
+      Enter Platform
+    </button>
+  </div>
+
+  <!-- MAIN LANDING PAGE -->
+  <div id="main-content">
+  <!-- Design Layers -->
+  <div class="noise-overlay"></div>
+  <div class="grid-backdrop"></div>
+  <div class="cursor-highlight"></div>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-content">
+      <a href="/" class="logo">
+        <div class="logo-box">
+          <svg viewBox="0 0 100 100" style="width: 24px; height: 24px; position: relative; z-index: 1;">
+            <defs>
+              <linearGradient id="vGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#6ee7b7;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#7dd3fc;stop-opacity:1" />
+              </linearGradient>
+            </defs>
+            <path d="M 30 20 L 50 70 L 70 20 L 85 20 L 50 90 L 15 20 Z" fill="url(#vGradient)"/>
+            <path d="M 60 15 L 75 30 L 70 30 L 70 45 L 60 45 L 60 30 L 55 30 Z" fill="url(#vGradient)"/>
+          </svg>
         </div>
+        <div class="logo-text-wrapper">
+          <span class="logo-text">VelocityAI</span>
+          <span class="logo-subtitle">Learning Platform</span>
+        </div>
+      </a>
+      <div class="nav-links">
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#vision" class="nav-link">Vision</a>
+        <a href="practice-unified.html" class="btn-magnetic btn-primary">
+          Start Practicing
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M1 6h10M7 2l4 4-4 4"/>
+          </svg>
+        </a>
       </div>
     </div>
   </nav>
 
   <!-- Hero Section -->
   <section class="hero">
+    <div class="linear-glow"></div>
+    <div class="scanner-lines">
+      <div class="scanner-line-h"></div>
+      <div class="scanner-line-v"></div>
+    </div>
+
+    <!-- Floating Callouts -->
+    <div class="callout" style="top: 15%; left: 8%;">✨ AI-Powered</div>
+    <div class="callout" style="top: 30%; right: 10%; animation-delay: 0.5s;">⚡ Real-Time</div>
+    <div class="callout" style="bottom: 25%; left: 12%; animation-delay: 1s;">🎙️ Voice First</div>
+
     <div class="container">
-      <div class="hero-badge">
-        <span class="pulse-dot"></span>
-        <span>Built with Gemini 2.5 Flash • ElevenLabs • Real-time Context</span>
+      <div class="hero-content">
+        <div class="tags-row">
+          <div class="tag" style="background: linear-gradient(135deg, #4285F4, #34A853); border-color: transparent; color: white; padding: 8px 16px;">
+            <svg viewBox="0 0 48 48" style="width: 18px; height: 18px;">
+              <path fill="#FFF" d="M44,24c0,11.044-8.956,20-20,20S4,35.044,4,24S12.956,4,24,4S44,12.956,44,24z"/>
+              <path fill="#1a73e8" d="M33.7,24.1c0-0.7-0.1-1.3-0.2-2H24v3.8h5.5c-0.2,1.3-1,2.4-2.1,3.1v2.5h3.4C32.7,29.6,33.7,27.1,33.7,24.1z"/>
+            </svg>
+            <span style="font-weight: 700;">Powered by Google Gemini</span>
+          </div>
+          <div class="tag" style="background: #000; border-color: #333; color: white; padding: 8px 16px;">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="width: 16px; height: 16px;">
+              <circle cx="8" cy="12" r="2"/>
+              <circle cx="16" cy="12" r="2"/>
+            </svg>
+            <span style="font-weight: 700;">ElevenLabs Voice</span>
+          </div>
+          <div class="tag">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+            <span>Voice-First Learning</span>
+          </div>
+        </div>
+
+        <h1>Learn Data Structures and Algorithms at Lightning Speed with AI Guidance</h1>
+        <p class="hero-subtitle">
+          Meet <strong>Vela</strong>, your AI voice mentor. Interactive visualizations and video solutions powered by <strong style="background: linear-gradient(135deg, #4285F4, #34A853); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Google Gemini</strong> and <strong style="color: #fff;">ElevenLabs</strong> professional voice synthesis.
+        </p>
+
+        <div class="hero-buttons">
+          <a href="practice-unified.html" class="btn-magnetic btn-primary">
+            Start Practicing
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 6h10M7 2l4 4-4 4"/>
+            </svg>
+          </a>
+          <a href="#vision" class="btn-magnetic btn-secondary">
+            Watch Demo
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="3,1 10,6 3,11"/>
+            </svg>
+          </a>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat">
+            <div class="stat-value">8+</div>
+            <div class="stat-label">Problems</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">3</div>
+            <div class="stat-label">Learning Modes</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">AI</div>
+            <div class="stat-label">Coach</div>
+          </div>
+        </div>
       </div>
-      <h1 class="hero-title">
-        The voice layer for<br>peer programming
-      </h1>
-      <p class="hero-subtitle">
-        KachowAI is a voice-first peer programming companion that bridges humans and AI-powered coding tools through natural conversation.
-      </p>
-      <p class="hero-description">
-        This first iteration focuses on efficient DSA learning—helping you master data structures and algorithms through real-time voice guidance. The future? Full integration with IDEs like Cursor and Windsurf, bringing voice-powered pair programming to your entire codebase.
-      </p>
-      <div class="hero-cta">
-        <a href="/app" class="btn-primary btn-large">Launch KachowAI</a>
-        <a href="https://github.com/yourusername/kachowai" target="_blank" class="btn-primary btn-secondary btn-large">View on GitHub ↗</a>
+
+      <div class="scroll-cue">
+        <span>Scroll</span>
+        <svg viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M1 1l5 5 5-5"/>
+        </svg>
       </div>
     </div>
   </section>
 
-  <!-- Powered By -->
-  <section class="powered-by">
+  <!-- Features Section -->
+  <section id="features">
     <div class="container">
-      <div class="powered-by-title">Powered by</div>
-      <div class="powered-by-logos">
-        <div class="powered-by-logo">
-          <div class="logo-icon">🔊</div>
-          <div class="logo-name">ElevenLabs</div>
+      <div class="section-header fade-in">
+        <div class="eyebrow">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          </svg>
+          <span>FEATURES</span>
         </div>
-        <div class="powered-by-logo">
-          <div class="logo-icon">✨</div>
-          <div class="logo-name">Google Gemini 2.5 Flash</div>
+        <h2 class="section-title">Core Features</h2>
+        <p class="section-subtitle">Everything you need to master Data Structures and Algorithms efficiently</p>
+      </div>
+
+      <div class="feature-grid">
+        <div class="feature-card fade-in" style="grid-column: span 1;">
+          <div class="icon-box">🎙️</div>
+          <h3 class="feature-title">
+            Vela - Voice Mentor
+            <span class="badge" style="background: linear-gradient(135deg, #4285F4, #34A853); border: none; color: white;">AI-Powered</span>
+          </h3>
+          <p class="feature-desc" style="font-size: 15px; line-height: 1.8;">
+            <strong>Your 24/7 AI pair programming partner.</strong> Vela uses <strong>Google Gemini</strong> for intelligent Socratic teaching - asking the right questions at the right time to guide you to the solution without giving it away.
+            <br><br>
+            <strong>🎯 Real-time code awareness:</strong> Vela watches your workspace and understands exactly what you're working on, providing context-aware hints and feedback as you solve problems.
+            <br><br>
+            <strong>🗣️ Natural voice interaction:</strong> Powered by <strong>ElevenLabs</strong> professional voice synthesis, Vela speaks to you like a real mentor with clear, expressive audio at optimized speed.
+            <br><br>
+            <strong>💡 Smart teaching methodology:</strong> Instead of spoon-feeding answers, Vela helps you develop problem-solving intuition through guided discovery.
+          </p>
         </div>
-        <div class="powered-by-logo">
-          <div class="logo-icon">🚀</div>
-          <div class="logo-name">FastAPI</div>
+
+        <div class="feature-card fade-in" style="grid-column: span 1;">
+          <div class="icon-box">📺</div>
+          <h3 class="feature-title">
+            Video Solution Conversator
+            <span class="badge new">NEW</span>
+          </h3>
+          <p class="feature-desc" style="font-size: 15px; line-height: 1.8;">
+            <strong>Learn from NeetCode videos with AI-powered understanding.</strong> Watch expert solution walkthroughs while chatting with Vela about what's happening in real-time.
+            <br><br>
+            <strong>📝 Full transcript integration:</strong> Automatic transcription using <strong>OpenAI Whisper</strong> gives Vela complete understanding of video content. Transcripts are cached for instant future access.
+            <br><br>
+            <strong>⏱️ Timestamp-aware AI:</strong> Vela knows exactly where you are in the video and can explain concepts from that specific moment. Ask "what did he just say?" and get contextual answers.
+            <br><br>
+            <strong>🎯 Interactive learning:</strong> Pause anytime to ask questions, request clarification, or dive deeper into specific topics covered in the video.
+          </p>
         </div>
-        <div class="powered-by-logo">
-          <div class="logo-icon">💻</div>
-          <div class="logo-name">Built using Cursor</div>
+
+        <div class="feature-card fade-in" style="grid-column: span 1;">
+          <div class="icon-box">🎨</div>
+          <h3 class="feature-title">
+            Algorithm Visualization
+            <span class="badge" style="background: rgba(126, 34, 206, 0.2); border-color: rgba(167, 139, 250, 0.4); color: #c4b5fd;">Visual</span>
+          </h3>
+          <p class="feature-desc" style="font-size: 15px; line-height: 1.8;">
+            <strong>See algorithms come alive with AI-generated animations.</strong> Gemini creates dynamic GSAP-powered visualizations that show exactly how algorithms and data structures work step-by-step.
+            <br><br>
+            <strong>🎬 AI-generated animations:</strong> Request any algorithm (sorting, trees, graphs, DP) and watch Gemini generate custom visualizations with smooth animations and clear transitions.
+            <br><br>
+            <strong>🔊 Voice narration:</strong> Every visualization includes synchronized voice explanation from ElevenLabs, making complex concepts easy to grasp visually and audibly.
+            <br><br>
+            <strong>⚡ Interactive controls:</strong> Pause, rewind, and step through animations at your own pace. Perfect for understanding the "why" behind each algorithmic step.
+          </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- The Vision -->
-  <section class="vision">
+  <!-- Vision Section -->
+  <section id="vision">
+    <div class="linear-glow"></div>
+    <div class="scanner-lines">
+      <div class="scanner-line-h"></div>
+    </div>
+
     <div class="container">
-      <div class="vision-header">
-        <h2 class="vision-title">The Vision</h2>
-        <div class="vision-separator"></div>
-      </div>
-      <div class="vision-content">
-        <p class="vision-text">
-          KachowAI is built on a bold idea: <strong>voice should be the primary interface between humans and AI-powered coding tools.</strong> While AI assistants have revolutionized how we write code, they still require typing—breaking flow and slowing thinking.
-        </p>
-        
-        <div class="vision-highlight">
-          We're building the voice layer for peer programming.
+      <div class="section-header fade-in">
+        <div class="eyebrow">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          </svg>
+          <span>POWERED BY AI</span>
         </div>
-
-        <p class="vision-text">
-          This first iteration focuses on what we do best: helping developers master data structures and algorithms through efficient, voice-driven pair programming. Using ElevenLabs' conversational AI and Google Cloud Vertex AI (Gemini 2.5 Flash), we've created a mentor that sees your code in real-time and guides you with Socratic questions—not answers.
-        </p>
-
-        <p class="vision-text">
-          The system maintains persistent voice sessions, remembers your conversation history, and stays connected while you code—delivering a true peer programming experience. You can think out loud, debug interactively, and learn faster without breaking your flow to type questions.
-        </p>
-
-        <p class="vision-text">
-          <strong>The future is integration.</strong> Imagine KachowAI running locally in platforms like Cursor or Windsurf, with access to your entire indexed codebase. Voice-powered pair programming across full-stack applications, not just algorithm practice. Context-aware guidance for debugging, refactoring, and system design—all through natural conversation.
-        </p>
-
-        <p class="vision-text">
-          Today, we're proving the model works for DSA learning. Tomorrow, we're bringing voice-first development to every IDE and every developer.
+        <h2 class="section-title">Enterprise-Grade AI Technology</h2>
+        <p class="section-subtitle">
+          Built with Google Gemini and ElevenLabs professional voice synthesis
         </p>
       </div>
 
-      <!-- Feature Boxes -->
-      <div class="feature-boxes">
-        <div class="feature-box">
-          <div class="feature-box-icon">🎤</div>
-          <h3 class="feature-box-title">Voice-First Interface</h3>
-          <p class="feature-box-description">
-            Continuous voice sessions with instant TTS responses. Talk naturally, think out loud, and learn without breaking flow.
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 3rem;">
+        <!-- Gemini Card - Larger and More Prominent -->
+        <div class="feature-card fade-in" style="padding: 48px; background: linear-gradient(135deg, rgba(66, 133, 244, 0.05), rgba(52, 168, 83, 0.05));">
+          <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px;">
+            <div class="icon-box" style="width: 64px; height: 64px; background: linear-gradient(135deg, #4285F4, #34A853, #FBBC04, #EA4335); padding: 12px;">
+              <svg viewBox="0 0 48 48" style="width: 40px; height: 40px;">
+                <path fill="#FFF" d="M44,24c0,11.044-8.956,20-20,20S4,35.044,4,24S12.956,4,24,4S44,12.956,44,24z"/>
+                <path fill="#4285F4" d="M33.7,24.1c0-0.7-0.1-1.3-0.2-2H24v3.8h5.5c-0.2,1.3-1,2.4-2.1,3.1v2.5h3.4C32.7,29.6,33.7,27.1,33.7,24.1z"/>
+                <path fill="#34A853" d="M24,34c2.8,0,5.1-0.9,6.8-2.5l-3.4-2.6c-0.9,0.6-2.1,1-3.4,1c-2.6,0-4.9-1.8-5.7-4.2h-3.5v2.7C16.6,31.8,20,34,24,34z"/>
+                <path fill="#FBBC04" d="M18.3,25.7c-0.2-0.6-0.3-1.2-0.3-1.7s0.1-1.2,0.3-1.7v-2.7h-3.5c-0.6,1.2-1,2.5-1,3.9s0.3,2.7,1,3.9L18.3,25.7z"/>
+                <path fill="#EA4335" d="M24,18c1.5,0,2.8,0.5,3.8,1.5l2.9-2.9C28.1,15,26,14,24,14c-4,0-7.4,2.2-9.2,5.5l3.5,2.7C19.1,19.8,21.4,18,24,18z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; margin: 0; background: linear-gradient(135deg, #4285F4, #34A853); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Google Gemini</h3>
+              <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.16em; color: var(--text-dimmed); margin-top: 4px;">AI Brain Powering Vela</div>
+            </div>
+          </div>
+          <p class="feature-desc" style="font-size: 16px; line-height: 1.8; margin-bottom: 24px;">
+            <strong style="color: #fff; font-size: 17px;">The most advanced AI reasoning engine for education.</strong>
+            <br><br>
+            🧠 <strong>1 Million+ Token Context Window:</strong> Gemini remembers your entire coding session, every problem you've solved, and all your conversations with Vela - providing truly personalized mentoring.
+            <br><br>
+            ⚡ <strong>Lightning-Fast Responses:</strong> Sub-second API responses mean Vela feels like a real-time conversation, not a chatbot. No waiting, just instant guidance.
+            <br><br>
+            🎯 <strong>Advanced Code Understanding:</strong> Gemini's multimodal capabilities analyze your code structure, detect patterns, and provide insights that go beyond syntax to teach algorithmic thinking.
+            <br><br>
+            🎨 <strong>Creative Visualization Generation:</strong> Generates complete GSAP animation code for any algorithm, creating educational visualizations that make complex concepts crystal clear.
+          </p>
+          <div style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border: 1px solid rgba(66, 133, 244, 0.3); background: rgba(66, 133, 244, 0.1); font-size: 11px; text-transform: uppercase; letter-spacing: 0.16em; color: #4285F4;">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="width: 14px; height: 14px;">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+            Google's Latest AI Model
+          </div>
+        </div>
+
+        <!-- ElevenLabs Card - Larger and More Prominent -->
+        <div class="feature-card fade-in" style="padding: 48px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.05));">
+          <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px;">
+            <div class="icon-box" style="width: 64px; height: 64px; background: linear-gradient(135deg, #000000, #2a2a2a); padding: 12px;">
+              <svg viewBox="0 0 120 40" style="width: 40px; height: 40px;">
+                <text x="8" y="28" font-family="Arial, sans-serif" font-weight="700" font-size="20" fill="#FFFFFF">11</text>
+                <circle cx="75" cy="20" r="12" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+                <circle cx="75" cy="20" r="6" fill="#FFFFFF"/>
+              </svg>
+            </div>
+            <div>
+              <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; margin: 0; color: #fff;">ElevenLabs</h3>
+              <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.16em; color: var(--text-dimmed); margin-top: 4px;">Professional Voice Synthesis</div>
+            </div>
+          </div>
+          <p class="feature-desc" style="font-size: 16px; line-height: 1.8; margin-bottom: 24px;">
+            <strong style="color: #fff; font-size: 17px;">Cinema-quality voice that brings Vela to life.</strong>
+            <br><br>
+            🎙️ <strong>Neural Voice Technology:</strong> ElevenLabs uses cutting-edge AI to generate natural, expressive speech that sounds like a real human mentor - not a robotic text-to-speech system.
+            <br><br>
+            🗣️ <strong>Optimized for Learning:</strong> Audio is delivered at 1.1x speed with perfect clarity, helping you learn faster while maintaining comprehension. Every word is crisp and easy to understand.
+            <br><br>
+            💬 <strong>Real-Time Streaming:</strong> Voice synthesis happens in milliseconds, making conversations with Vela feel completely natural. No awkward pauses or delays.
+            <br><br>
+            🎯 <strong>Custom Voice Selection:</strong> Choose from multiple voice profiles to find the mentor voice that works best for your learning style.
+          </p>
+          <div style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border: 1px solid rgba(255, 255, 255, 0.25); background: rgba(255, 255, 255, 0.05); font-size: 11px; text-transform: uppercase; letter-spacing: 0.16em; color: #fff;">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="width: 14px; height: 14px;">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+            Industry-Leading TTS
+          </div>
+        </div>
+      </div>
+
+      <!-- Additional Tech Features -->
+      <div class="feature-grid" style="margin-top: 32px;">
+        <div class="feature-card fade-in">
+          <div class="icon-box" style="background: linear-gradient(135deg, #0f172a, #1e293b);">
+            <svg viewBox="0 0 24 24" style="width: 28px; height: 28px;" fill="none" stroke="#FFFFFF" stroke-width="2">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+            </svg>
+          </div>
+          <h3 class="feature-title">Real-Time AI Processing</h3>
+          <p class="feature-desc">
+            <strong>Sub-second response times</strong> thanks to optimized Gemini API integration. WebSocket architecture streams AI responses instantly while file watching automatically updates context. Your mentor knows what you're coding in real-time.
           </p>
         </div>
 
-        <div class="feature-box">
-          <div class="feature-box-icon">🔍</div>
-          <h3 class="feature-box-title">Real-Time Context</h3>
-          <p class="feature-box-description">
-            Automatically tracks your code changes across multiple files. The AI always sees your latest work—no copy-pasting required.
+        <div class="feature-card fade-in">
+          <div class="icon-box">🎤</div>
+          <h3 class="feature-title">OpenAI Whisper</h3>
+          <p class="feature-desc">
+            <strong>Automatic video transcription</strong> for any YouTube tutorial. Whisper AI converts video audio to timestamped text, enabling Vela to understand and discuss video content with perfect accuracy.
           </p>
         </div>
 
-        <div class="feature-box">
-          <div class="feature-box-icon">🎓</div>
-          <h3 class="feature-box-title">Socratic Teaching</h3>
-          <p class="feature-box-description">
-            Learn through guided discovery, not memorization. The AI asks questions, gives hints, and helps you think—never just hands you answers.
-          </p>
-        </div>
-
-        <div class="feature-box">
-          <div class="feature-box-icon">⚡</div>
-          <h3 class="feature-box-title">Gemini 2.5 Flash</h3>
-          <p class="feature-box-description">
-            Powered by Google's latest AI model with 1M+ token context, ultra-fast responses, and advanced reasoning capabilities.
-          </p>
-        </div>
-
-        <div class="feature-box">
-          <div class="feature-box-icon">🔊</div>
-          <h3 class="feature-box-title">Natural Speech</h3>
-          <p class="feature-box-description">
-            ElevenLabs TTS with browser fallback. Text sanitization ensures natural-sounding responses without robotic "back quote" interruptions.
-          </p>
-        </div>
-
-        <div class="feature-box">
-          <div class="feature-box-icon">💻</div>
-          <h3 class="feature-box-title">Code Execution</h3>
-          <p class="feature-box-description">
-            Run Python code against test cases in real-time. Get instant feedback on your solutions with detailed pass/fail results.
+        <div class="feature-card fade-in">
+          <div class="icon-box">⚡</div>
+          <h3 class="feature-title">FastAPI Backend</h3>
+          <p class="feature-desc">
+            <strong>High-performance Python backend</strong> with WebSocket support for real-time communication. Handles code execution, AI requests, and video transcription with millisecond precision.
           </p>
         </div>
       </div>
@@ -661,44 +1306,183 @@
   </section>
 
   <!-- CTA Section -->
-  <section class="cta">
-    <div class="container">
-      <h2 class="cta-title">Ready to transform how you learn?</h2>
-      <p class="cta-subtitle">Start having voice conversations with your AI pair programmer today.</p>
-      <a href="/app" class="btn-primary btn-large">Launch KachowAI →</a>
+  <section>
+    <div class="linear-glow"></div>
+    <div class="scanner-lines">
+      <div class="scanner-line-h"></div>
+    </div>
+
+    <div class="container" style="text-align: center;">
+      <div class="section-header fade-in">
+        <div class="eyebrow">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          </svg>
+          <span>GET STARTED</span>
+        </div>
+        <h2 class="section-title">Ready to master DSA at lightning speed?</h2>
+        <p class="section-subtitle">
+          Start practicing with AI-powered voice mentoring and interactive visualizations today.
+        </p>
+      </div>
+      <a href="practice-unified.html" class="btn-magnetic btn-primary" style="font-size: 12px; padding: 16px 32px;">
+        Start Practicing
+        <svg width="14" height="14" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M1 6h10M7 2l4 4-4 4"/>
+        </svg>
+      </a>
     </div>
   </section>
 
   <!-- Footer -->
   <footer>
-    <div class="container">
-      <div class="footer-content">
-        <div class="footer-text">
-          © 2026 KachowAI. Built for voice-first developers.
-        </div>
-        <div class="footer-links">
-          <a href="https://github.com/yourusername/kachowai" target="_blank" class="footer-link">GitHub</a>
-          <a href="/app" class="footer-link">Launch App</a>
-        </div>
+    <div class="footer-content">
+      <div class="footer-text">
+        © 2026 VelocityAI. Learn Data Structures and Algorithms at lightning speed.
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/yourusername/velocityai" target="_blank" class="footer-link">GitHub</a>
+        <a href="practice-unified.html" class="footer-link">Practice</a>
+        <a href="visualize.html" class="footer-link">Visualize</a>
       </div>
     </div>
   </footer>
+  </div>
+  <!-- End of main-content -->
 
   <script>
-    // Mouse glow effect
-    const mouseGlow = document.getElementById('mouseGlow');
-    
+    // === INTRO ANIMATION SEQUENCE ===
+    const introTl = gsap.timeline();
+
+    // Animate intro screen elements
+    introTl.to("#logo-box-intro", {
+        opacity: 1,
+        scale: 1,
+        duration: 1,
+        ease: "power2.out"
+      })
+      .to("#logo-text-intro", {
+        opacity: 1,
+        duration: 0.8,
+        ease: "power2.out"
+      }, "-=0.4")
+      .to("#loader-bar", {
+        width: 300,
+        duration: 1.5,
+        ease: "power2.inOut"
+      }, "-=0.3")
+      .to("#sub-text", {
+        opacity: 1,
+        duration: 0.6
+      }, "-=0.5")
+      .to("#enter-btn", {
+        opacity: 1,
+        scale: 1,
+        duration: 0.6,
+        ease: "back.out(1.7)"
+      }, "-=0.2");
+
+    // Enter button click handler
+    document.getElementById('enter-btn').addEventListener('click', () => {
+      const enterTl = gsap.timeline();
+
+      // Slide intro screen up
+      enterTl.to("#intro-screen", {
+          yPercent: -100,
+          duration: 1.2,
+          ease: "power4.inOut"
+        })
+        // Show main content
+        .set("#main-content", {
+          visibility: "visible"
+        })
+        .to("#main-content", {
+          opacity: 1,
+          duration: 0.5
+        }, "-=0.5")
+        // Animate in nav
+        .from("nav", {
+          y: -100,
+          opacity: 0,
+          duration: 0.8
+        }, "-=0.3")
+        // Animate in hero elements
+        .from(".hero h1, .hero-subtitle, .hero-buttons, .stats-grid", {
+          y: 50,
+          opacity: 0,
+          stagger: 0.1,
+          duration: 0.8,
+          ease: "power3.out"
+        }, "-=0.5")
+        .from(".callout", {
+          y: 30,
+          opacity: 0,
+          stagger: 0.1,
+          duration: 0.6,
+          ease: "power3.out"
+        }, "-=0.4")
+        // Animate scroll cue separately at the end
+        .from(".scroll-cue", {
+          y: 20,
+          opacity: 0,
+          duration: 0.5,
+          ease: "power2.out"
+        }, "-=0.2");
+    });
+
+    // === CURSOR HIGHLIGHT EFFECT ===
+    const cursor = document.querySelector('.cursor-highlight');
+    let mouseX = 0, mouseY = 0;
+    let cursorX = 0, cursorY = 0;
+
     document.addEventListener('mousemove', (e) => {
-      mouseGlow.style.left = e.clientX + 'px';
-      mouseGlow.style.top = e.clientY + 'px';
-      mouseGlow.style.opacity = '1';
+      mouseX = e.clientX;
+      mouseY = e.clientY;
     });
 
-    document.addEventListener('mouseleave', () => {
-      mouseGlow.style.opacity = '0';
+    function animateCursor() {
+      cursorX += (mouseX - cursorX) * 0.1;
+      cursorY += (mouseY - cursorY) * 0.1;
+      cursor.style.left = cursorX + 'px';
+      cursor.style.top = cursorY + 'px';
+      requestAnimationFrame(animateCursor);
+    }
+
+    animateCursor();
+
+    // === MAGNETIC BUTTON EFFECT ===
+    document.querySelectorAll('.btn-magnetic').forEach(btn => {
+      btn.addEventListener('mousemove', (e) => {
+        const rect = btn.getBoundingClientRect();
+        const x = e.clientX - (rect.left + rect.width / 2);
+        const y = e.clientY - (rect.top + rect.height / 2);
+        btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+      });
+
+      btn.addEventListener('mouseleave', () => {
+        btn.style.transform = 'translate(0, 0)';
+      });
     });
 
-    // Smooth scroll for anchor links
+    // === SCROLL ANIMATIONS ===
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.fade-in').forEach(el => {
+      observer.observe(el);
+    });
+
+    // === SMOOTH SCROLL ===
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
         e.preventDefault();
@@ -710,6 +1494,24 @@
           });
         }
       });
+    });
+
+    // === HIDE SCROLL CUE ON SCROLL ===
+    const scrollCue = document.querySelector('.scroll-cue');
+    let lastScrollTop = 0;
+
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+      if (scrollTop > 100) {
+        scrollCue.style.opacity = '0';
+        scrollCue.style.pointerEvents = 'none';
+      } else {
+        scrollCue.style.opacity = '1';
+        scrollCue.style.pointerEvents = 'auto';
+      }
+
+      lastScrollTop = scrollTop;
     });
   </script>
 </body>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KachowAI - Voice Peer Programming</title>
+  <title>VelocityAI - Voice Peer Programming</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
@@ -90,6 +90,37 @@
       display: flex;
       align-items: center;
       gap: 12px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 4px;
+      background: rgba(255, 255, 255, 0.02);
+      padding: 4px;
+      border-radius: 8px;
+    }
+
+    .tab {
+      padding: 8px 16px;
+      border-radius: 6px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .tab:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text);
+    }
+
+    .tab.active {
+      background: var(--accent);
+      color: #000;
     }
 
     select {
@@ -673,12 +704,12 @@
     <div class="nav-left">
       <a href="/" class="logo">
         <div class="logo-icon">⚡</div>
-        <span>KachowAI</span>
+        <span>VelocityAI</span>
       </a>
-      <div class="breadcrumb">
-        <span>🏠 Home</span>
-        <span class="breadcrumb-sep">|</span>
-        <span>Learn to Code By Talking</span>
+      <div class="tabs">
+        <a href="/app" class="tab active">Voice Mentor</a>
+        <a href="/practice" class="tab">Watch Solutions</a>
+        <a href="/visualize" class="tab">Learn & Visualize</a>
       </div>
     </div>
     <div class="nav-right">
@@ -1371,7 +1402,7 @@ print(max_profit([7,1,5,3,6,4]))  # Expected: 5`,
           
           // AI greets user first!
           setTimeout(() => {
-            const greeting = "Hi! I'm Kachow, your AI pair programming mentor. How can I help you today?";
+            const greeting = "Hi! I'm Velocity, your AI pair programming mentor. How can I help you today?";
             addMessage('assistant', greeting);
             playTTS(greeting);
           }, 1000); // Wait 1 second for mic to be ready
