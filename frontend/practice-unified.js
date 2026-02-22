@@ -1,6 +1,14 @@
 // Unified Practice Interface - Voice Mentor + Video Solutions
 // PROBLEMS object is loaded from problems.js script tag
 
+// Dynamic URL detection: works on localhost dev AND Cloud Run
+const API_BASE = (window.location.hostname === 'localhost' && window.location.port === '3000')
+  ? 'http://localhost:8000'
+  : window.location.origin;
+const WS_HOST = (window.location.hostname === 'localhost' && window.location.port === '3000')
+  ? 'localhost:8000'
+  : window.location.host;
+
 // ===== STATE MANAGEMENT =====
 const state = {
   // Current problem
@@ -212,7 +220,7 @@ function switchMode(mode) {
 function connectWebSocket() {
   const proto = window.location.protocol === 'https:' ? 'wss' : 'ws';
   // Connect to backend server on port 8000
-  const wsUrl = `${proto}://localhost:8000/ws`;
+  const wsUrl = `${proto}://${WS_HOST}/ws`;
 
   state.socket = new WebSocket(wsUrl);
 
@@ -413,7 +421,7 @@ async function playTTS(text, useBrowserFallback = false) {
   try {
     // Use ElevenLabs by default for high-quality voice
     if (!useBrowserFallback) {
-      const response = await fetch('http://localhost:8000/tts', {
+      const response = await fetch('${API_BASE}/tts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text, voice_id: null })
@@ -578,7 +586,7 @@ async function loadVideoSolution() {
 
   // Fetch transcript
   try {
-    const response = await fetch(`http://localhost:8000/youtube/transcript/${video.videoId}`);
+    const response = await fetch(`${API_BASE}/youtube/transcript/${video.videoId}`);
     if (response.ok) {
       const data = await response.json();
       state.currentVideoTranscript = data.transcript;
@@ -657,7 +665,7 @@ async function sendVideoMessage() {
     let answer;
 
     if (state.currentVideoTranscript) {
-      const response = await fetch('http://localhost:8000/video-solution/chat', {
+      const response = await fetch(`${API_BASE}/video-solution/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -737,7 +745,7 @@ async function runTests() {
   testStatus.style.color = 'var(--text-muted)';
 
   try {
-    const response = await fetch('http://localhost:8000/execute', {
+    const response = await fetch(`${API_BASE}/execute`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

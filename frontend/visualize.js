@@ -1,6 +1,14 @@
 // VelocityAI Visualization Engine
 // Handles AI-generated animations for DS/Algo learning
 
+// Dynamic URL detection: works on localhost dev AND Cloud Run
+const API_BASE = (window.location.hostname === 'localhost' && window.location.port === '3000')
+  ? 'http://localhost:8000'
+  : window.location.origin;
+const WS_HOST = (window.location.hostname === 'localhost' && window.location.port === '3000')
+  ? 'localhost:8000'
+  : window.location.host;
+
 class AnimationEngine {
   constructor(svgElement) {
     this.svg = svgElement;
@@ -758,7 +766,7 @@ class VoiceManager {
 
     try {
       // Use ElevenLabs via backend
-      const response = await fetch('http://localhost:8000/tts', {
+      const response = await fetch('${API_BASE}/tts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text })
@@ -805,7 +813,7 @@ class WebSocketManager {
   connect() {
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     // Connect to backend server on port 8000
-    const wsUrl = `${protocol}//localhost:8000/ws`;
+    const wsUrl = `${protocol}//${WS_HOST}/ws`;
 
     this.ws = new WebSocket(wsUrl);
 

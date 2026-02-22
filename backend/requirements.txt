@@ -6,5 +6,7 @@ google-generativeai
 watchdog
 youtube-transcript-api
 google-api-python-client
+google-auth-oauthlib
+google-auth-httplib2
 yt-dlp
 openai

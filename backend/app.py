@@ -31,7 +31,7 @@ from openai import OpenAI
 
 load_dotenv()
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent
 FRONTEND_DIR = BASE_DIR / "frontend"
 WORKSPACE_DIR = Path(os.getenv("WORKSPACE_DIR", BASE_DIR))
 
@@ -40,7 +40,7 @@ app = FastAPI(title="VelocityAI - Learn LeetCode at Lightning Speed")
 # Add CORS middleware to allow frontend requests
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -66,11 +66,11 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 # OAuth2 Configuration
 SCOPES = ['https://www.googleapis.com/auth/youtube.force-ssl']
-TOKEN_FILE = BASE_DIR / "backend" / "youtube_token.pickle"
+TOKEN_FILE = BASE_DIR / "youtube_token.pickle"
 
 # Whisper transcription cache
-TRANSCRIPTS_CACHE_DIR = BASE_DIR / "backend" / "transcripts_cache"
-TRANSCRIPTS_CACHE_DIR.mkdir(exist_ok=True)
+TRANSCRIPTS_CACHE_DIR = BASE_DIR / "transcripts_cache"
+TRANSCRIPTS_CACHE_DIR.mkdir(parents=True, exist_ok=True)
 
 if GEMINI_API_KEY:
     genai.configure(api_key=GEMINI_API_KEY)
@@ -570,10 +570,11 @@ async def call_gemini(
         [f"User: {item['user']}\nAssistant: {item['assistant']}" for item in history]
     )
     context_block = f"\nCode context:\n{code_context}\n" if code_context else ""
+    history_block = f"Conversation so far:\n{history_text}\n" if history else ""
     prompt = (
         f"{SYSTEM_PROMPT}\n"
         f"{context_block}"
-        f"{'Conversation so far:\n' + history_text + '\n' if history else ''}"
+        f"{history_block}"
         f"Latest user message: {user_text}"
     )
 
@@ -594,10 +595,11 @@ async def generate_visualization(
         raise HTTPException(status_code=400, detail="GEMINI_API_KEY is not set.")
 
     # Build visualization prompt
+    context_part = f"Additional Context:\n{context}\n\n" if context else ""
     prompt = (
         f"{VISUALIZATION_PROMPT}\n\n"
         f"User Request: {user_request}\n\n"
-        f"{'Additional Context:\n' + context if context else ''}\n\n"
+        f"{context_part}"
         f"Generate the complete visualization JSON now:"
     )
 
@@ -1013,7 +1015,7 @@ async def fetch_youtube_captions_official(video_id: str):
 @app.get("/auth/youtube")
 async def auth_youtube():
     """Initiate YouTube OAuth2 flow."""
-    client_secret_path = BASE_DIR / "backend" / YOUTUBE_OAUTH_CLIENT_SECRET
+    client_secret_path = BASE_DIR / YOUTUBE_OAUTH_CLIENT_SECRET
 
     if not client_secret_path.exists():
         raise HTTPException(
@@ -1042,7 +1044,7 @@ async def auth_youtube():
 @app.get("/auth/callback")
 async def auth_callback(code: str, state: str = None):
     """Handle OAuth2 callback."""
-    client_secret_path = BASE_DIR / "backend" / YOUTUBE_OAUTH_CLIENT_SECRET
+    client_secret_path = BASE_DIR / YOUTUBE_OAUTH_CLIENT_SECRET
 
     flow = Flow.from_client_secrets_file(
         str(client_secret_path),
