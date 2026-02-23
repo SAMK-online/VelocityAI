@@ -421,7 +421,7 @@ async function playTTS(text, useBrowserFallback = false) {
   try {
     // Use ElevenLabs by default for high-quality voice
     if (!useBrowserFallback) {
-      const response = await fetch('${API_BASE}/tts', {
+      const response = await fetch(`${API_BASE}/tts`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text, voice_id: null })

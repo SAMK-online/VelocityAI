@@ -766,7 +766,7 @@ class VoiceManager {
 
     try {
       // Use ElevenLabs via backend
-      const response = await fetch('${API_BASE}/tts', {
+      const response = await fetch(`${API_BASE}/tts`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text })

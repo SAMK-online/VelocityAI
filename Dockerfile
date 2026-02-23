@@ -4,10 +4,11 @@ WORKDIR /app
 
 # Install dependencies
 COPY backend/requirements.txt requirements.txt
+RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg && rm -rf /var/lib/apt/lists/*
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application files
-COPY backend/app.py app.py
+COPY backend/ ./
 COPY frontend/ frontend/
 
 # Set environment variables

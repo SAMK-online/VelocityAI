@@ -4,5 +4,4 @@
 **/*.pyo
 backend/.env
 backend/youtube_token.pickle
-backend/transcripts_cache/
 backend/client_secret.json
